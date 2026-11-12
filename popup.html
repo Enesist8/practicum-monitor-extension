@@ -1,0 +1,29 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Practicum Monitor</title>
+<style>
+body{font:14px Arial,sans-serif;width:320px;padding:14px;color:#202124}
+h2{font-size:17px;margin:0 0 12px}
+label{display:block;margin:10px 0 4px}
+input{box-sizing:border-box;width:100%;padding:9px;border:1px solid #bbb;border-radius:6px}
+button{margin-top:12px;width:100%;padding:10px;border:0;border-radius:6px;background:#1769d2;color:white;font-weight:600;cursor:pointer}
+.status{margin-top:10px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap}
+.muted{color:#666;font-size:12px;line-height:1.4}
+</style>
+</head>
+<body>
+<h2>Practicum Monitor</h2>
+<label>Одноразовый код от куратора</label>
+<input id="code" placeholder="Введите код подключения">
+<button id="connect">Подключить этот компьютер</button>
+<div id="status" class="status">Введите код, полученный от куратора.</div>
+<p class="muted">
+Передаётся процент прогресса и заголовок страницы.
+Пароль Яндекса и cookies не считываются.
+</p>
+<script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿{
+  "manifest_version": 3,
+  "name": "Practicum Monitor — синхронизация прогресса",
+  "version": "0.3.0",
+  "description": "Передача прогресса Яндекс Практикума в Practicum Monitor.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "alarms"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Practicum Monitor",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://practicum.yandex.ru/*",
+        "https://practicum.yandex.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "https://practicum-monitor-relay.beleckymaksim91.workers.dev/*"
+  ]
+}
