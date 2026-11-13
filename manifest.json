@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Practicum Monitor — синхронизация прогресса",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Передача прогресса Яндекс Практикума в Practicum Monitor.",
   "permissions": [
     "storage",

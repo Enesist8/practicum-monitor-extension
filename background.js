@@ -1,3 +1,5 @@
+const BACKEND_SPRINT_MARKER = "[pm1:backend]";
+
 async function transmit(data) {
   const cfg = await chrome.storage.local.get(["serverUrl", "accessToken"]);
   if (!cfg.serverUrl || !cfg.accessToken) {
@@ -61,7 +63,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   transmit({
     progress_percent: message.progress_percent,
     course_name: message.course_name,
-    current_sprint: message.current_sprint
+    // The current relay forwards this field even when it drops course_name.
+    current_sprint: BACKEND_SPRINT_MARKER +
+      (message.current_sprint || "").slice(0, 100 - BACKEND_SPRINT_MARKER.length)
   }).then(sendResponse, () => sendResponse({accepted: false}));
   return true;
 });

@@ -31,7 +31,8 @@
     ) / 100;
 
     const lessonElement = document.querySelector(".current-lesson-path__content");
-    const currentSprint = (lessonElement?.innerText || "").trim().slice(0, 100) || null;
+    const currentSprint = (lessonElement?.innerText || "").trim().slice(0, 100);
+    if (!currentSprint) return "Курс распознан. Жду, пока появится текущий спринт.";
 
     const key = `${percent}|${currentSprint}`;
     if (!force && key === lastSent) return;
