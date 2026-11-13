@@ -10,7 +10,7 @@
     const courseHeading = document.querySelector("h1.profile-overview__title");
     const courseTitle = courseHeading?.textContent?.replace(/\s+/g, " ").trim();
     const normalizedTitle = courseTitle?.toLowerCase().replace(/\s*[-–—]\s*/g, "-");
-    if (normalizedTitle !== "бэкенд-разработчик") {
+    if (normalizedTitle !== "бэкенд-разработчик" && normalizedTitle !== "бэкенд-разработка") {
       lastSent = "";
       return courseTitle ? "Открыт другой курс: " + courseTitle
         : "На вкладке не найден заголовок курса. Откройте страницу обзора курса.";
