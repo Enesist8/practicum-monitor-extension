@@ -1,9 +1,9 @@
-﻿const RELAY_URL = "https://practicum-monitor-relay.beleckymaksim91.workers.dev";
+const RELAY_URL = "https://practicum-monitor-relay.beleckymaksim91.workers.dev";
 const $ = (id) => document.getElementById(id);
 
 (async () => {
   const cfg = await chrome.storage.local.get([
-    "lastProgress", "lastSyncAt", "lastSyncError", "studentName"
+    "lastProgress", "lastSyncAt", "lastSyncError", "studentName", "lastRelayStatus", "lastSentCourse"
   ]);
 
   if (cfg.studentName) {
@@ -12,11 +12,29 @@ const $ = (id) => document.getElementById(id);
 
   if (cfg.lastSyncAt) {
     $("status").textContent +=
-      `\nПоследняя отправка: ${new Date(cfg.lastSyncAt).toLocaleString()}` +
-      `\nПоследний прогресс: ${cfg.lastProgress ?? "—"}%` +
-      `\n${cfg.lastSyncError || ""}`;
+      `\nПоследняя попытка: ${new Date(cfg.lastSyncAt).toLocaleString()}` +
+      `\nПоследний принятый прогресс: ${cfg.lastProgress ?? "—"}%` +
+      `\n${cfg.lastSyncError || [cfg.lastSentCourse, cfg.lastRelayStatus].filter(Boolean).join("\n")}`;
   }
 })();
+
+$("check").addEventListener("click", async () => {
+  const button = $("check");
+  const result = $("checkResult");
+  button.disabled = true;
+  result.textContent = "Проверяю текущую вкладку…";
+  try {
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+    if (!tab?.id) throw new Error("Нет активной вкладки");
+    result.textContent = await chrome.tabs.sendMessage(tab.id, {
+      type: "CHECK_PROGRESS", force: true
+    }) ?? "Вкладка не вернула результат проверки.";
+  } catch {
+    result.textContent = "Откройте обзор курса в Яндекс Практикуме и обновите вкладку.";
+  } finally {
+    button.disabled = false;
+  }
+});
 
 $("connect").addEventListener("click", async () => {
   const code = $("code").value.trim().toUpperCase();
@@ -43,7 +61,11 @@ $("connect").addEventListener("click", async () => {
       serverUrl: RELAY_URL,
       accessToken: result.access_token,
       studentName: result.student_name,
-      lastSyncError: ""
+      lastSyncError: "",
+      lastSyncAt: null,
+      lastProgress: null,
+      lastRelayStatus: "",
+      lastSentCourse: ""
     });
 
     $("code").value = "";
